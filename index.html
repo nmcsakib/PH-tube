@@ -9,7 +9,26 @@
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
-    <h1 class="text-7xl">Hello world</h1>
-    <button class="btn btn-success btn-outline">boy</button>
+  <header class="container mx-auto px-4 pt-5">
+    <nav class="navbar flex justify-between items-center ">
+        <div>
+            <img src="/assets/Logo.png" alt="">
+        </div>
+        <div>
+            <button class="btn mr-28">Sort by view</button>
+        </div>
+        <div>
+            <button class="btn">Blog</button>
+        </div>
+    </nav>
+    <div class="divider"></div>
+    <nav id="category-container" class="flex justify-center gap-4"></nav>
+  </header>
+
+  <!-- Main container -->
+   <main class="container mx-auto px-4 pt-5">
+    <section id="video-container" class="grid grid-cols-3 gap-5"></section>
+   </main>
 </body>
+<script src="/js/script.js"></script>
 </html>
