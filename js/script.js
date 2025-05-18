@@ -10,13 +10,14 @@ const loadCategories = async () => {
         console.log(category);
         const categoryDiv = document.createElement('div');
         categoryDiv.innerHTML = `
-        <button onclick="loadCategoryVideos(${category.category_id})" id="category-${category.category_id}" class="btn">${category.category}</button>
+        <button onclick="loadCategoryVideos(${category.category_id})" id="category-${category.category_id}" class="btn category-btn">${category.category}</button>
         `;
         categoryContainer.appendChild(categoryDiv);
     })
 }
 
 const loadVideos = async () => {
+    document.getElementById('all-videos').classList.add('bg-red-500');
     document.querySelector('#video-container').innerHTML = '';
     // fetching videos from the API
     const response = await fetch('https://openapi.programming-hero.com/api/phero-tube/videos');
@@ -60,19 +61,25 @@ const displayVideos = (videos) => {
   
 
 const loadCategoryVideos = async (categoryId) => {
-    const activeCategory = document.getElementById(`category-${categoryId}`);
+  if(categoryId){
+      const activeCategory = document.getElementById(`category-${categoryId}`);
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('bg-red-500');
+    })
+    activeCategory.classList.add('bg-red-500');
     document.querySelector('#video-container').innerHTML = '';
 
      // fetching videos from the API
     const response = await fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${categoryId}`);
     const data = await response.json();
     displayVideos(data.category);
-
-
-    
-    
-
-    console.log(data.category);
+  }
+  else{
+     document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('bg-red-500');
+    })
+    loadVideos(categoryId);
+  }
 }
 
 loadVideos();
