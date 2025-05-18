@@ -24,14 +24,18 @@ const loadVideos = async () => {
     const videos = data.videos;
     console.log(videos);
     videos.forEach(video => {
+        const hour = parseInt(video.others.posted_date / 3600).toString().padStart(2, '0');
+        const minute = parseInt((video.others.posted_date % 3600)/60).toString().padStart(2, '0');
+        const second = ((video.others.posted_date % 3600) - (minute * 60)).toString().padStart(2, '0');
         console.log(video.thumbnail);
         const videoCard = document.createElement('div');
         videoCard.classList = 'card shadow-sm';
         videoCard.innerHTML = `
-        <figure class='h-[200px]'>
+        <figure class='h-[200px] relative'>
     <img class="w-full object-cover h-full cursor-pointer"
       src="${video.thumbnail}"
       alt="Shoes" />
+      ${video.others.posted_date ? `<span class="absolute bottom-2 right-2 bg-black/60 text-white font-bold text-xs px-2 py-1 rounded-full">${hour} : ${minute} : ${second}</span>` : ''}
   </figure>
   <div class="flex px-2 py-4 gap-4">
   <img class="w-10 h-10 rounded-full" src="${video.authors[0].profile_picture}" alt="" />
