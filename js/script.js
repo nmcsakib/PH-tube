@@ -7,27 +7,33 @@ const loadCategories = async () => {
     const data = await response.json();
     const categories = data.categories;
     categories.forEach(category => {
-        // console.log(category.category);
+        console.log(category);
         const categoryDiv = document.createElement('div');
-        categoryDiv.classList = 'btn btn-glass';
-        categoryDiv.innerText = category.category;
+        categoryDiv.innerHTML = `
+        <button onclick="loadCategoryVideos(${category.category_id})" id="category-${category.category_id}" class="btn">${category.category}</button>
+        `;
         categoryContainer.appendChild(categoryDiv);
     })
 }
 
 const loadVideos = async () => {
-    const videoContainer = document.querySelector('#video-container');
-
+    document.querySelector('#video-container').innerHTML = '';
     // fetching videos from the API
     const response = await fetch('https://openapi.programming-hero.com/api/phero-tube/videos');
     const data = await response.json();
-    const videos = data.videos;
-    console.log(videos);
+    displayVideos(data.videos);
+    
+    
+}
+
+const displayVideos = (videos) => {
+    const videoContainer = document.querySelector('#video-container');
+        console.log(videos);
+        
     videos.forEach(video => {
         const hour = parseInt(video.others.posted_date / 3600).toString().padStart(2, '0');
         const minute = parseInt((video.others.posted_date % 3600)/60).toString().padStart(2, '0');
         const second = ((video.others.posted_date % 3600) - (minute * 60)).toString().padStart(2, '0');
-        console.log(video.thumbnail);
         const videoCard = document.createElement('div');
         videoCard.classList = 'card shadow-sm';
         videoCard.innerHTML = `
@@ -49,7 +55,26 @@ const loadVideos = async () => {
   </div>`;
         videoContainer.appendChild(videoCard);
     })
-  
+
 }
+  
+
+const loadCategoryVideos = async (categoryId) => {
+    const activeCategory = document.getElementById(`category-${categoryId}`);
+    document.querySelector('#video-container').innerHTML = '';
+
+     // fetching videos from the API
+    const response = await fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${categoryId}`);
+    const data = await response.json();
+    displayVideos(data.category);
+
+
+    
+    
+
+    console.log(data.category);
+}
+
 loadVideos();
 loadCategories();
+loadCategoryVideos();
